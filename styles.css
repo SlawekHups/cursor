@@ -1,0 +1,97 @@
+/* Powiadomienie o sukcesie */
+#success-message {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+}
+
+@media (max-width: 576px) {
+    #success-message {
+        width: 90%;
+    }
+}
+
+/* Układ: Zdjęcie po lewej, select po prawej (50%) */
+.select-image-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: nowrap;
+    flex-direction: row-reverse;
+    margin-block-end: 30px;
+}
+
+.product-image {
+    max-width: 200px;
+    height: auto;
+    border: 1px solid #ddd;
+    padding: 5px;
+    margin-left: 10%;
+}
+
+.select-container {
+    flex: 1;
+    min-width: 50%;
+}
+
+/* Układ 4 pól w jednej linii na dużych ekranach */
+@media (min-width: 768px) {
+    .form-inline-group {
+        display: flex;
+        gap: 15px;
+    }
+
+    .form-inline-group .form-group {
+        flex: 1;
+    }
+}
+
+/* Układ edytorów Markdown */
+.editor-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.editor-container .form-group {
+    flex: 1;
+    min-width: 300px;
+}
+/* Kontener przycisków */
+.btn-group {
+    margin-bottom: 20px;
+    gap: 20px
+}
+/* .hups {
+    display: flex !important;
+    gap: 30px !important;
+} */
+
+/* Styl podstawowy przycisków filtrujących */
+.btn-group .filter-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    margin-right: 10px; /* Odstęp między przyciskami */
+}
+
+/* Usuń margines dla ostatniego przycisku */
+.btn-group .filter-btn:last-child {
+    margin-right: 0;
+}
+
+/* Efekt hover */
+.btn-group .filter-btn:hover {
+    opacity: 0.8;
+}
+
+/* Styl aktywnego przycisku */
+.btn-group .filter-btn.active {
+    border-color: #333;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+}

@@ -4,6 +4,21 @@ ini_set('display_errors', 1);
 
 session_start();
 
+// Funkcje bezpieczeństwa CSRF
+function generateCSRFToken() {
+    if (!isset($_SESSION['csrf_token'])) {
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    }
+    return $_SESSION['csrf_token'];
+}
+
+function validateCSRFToken($token) {
+    return isset($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $token);
+}
+
+// Generowanie tokenu CSRF dla formularza
+$csrf_token = generateCSRFToken();
+
 // Sprawdzenie konfiguracji
 $config_path = $_SERVER['DOCUMENT_ROOT'] . '/app/config/parameters.php';
 if (!file_exists($config_path)) {
@@ -142,6 +157,9 @@ function getImagePath($id_image) {
                     case 'validation':
                         echo isset($_GET['message']) ? htmlspecialchars(urldecode($_GET['message'])) : 'Błąd walidacji danych.';
                         break;
+                    case 'csrf':
+                        echo isset($_GET['message']) ? htmlspecialchars(urldecode($_GET['message'])) : 'Błąd bezpieczeństwa - nieprawidłowy token.';
+                        break;
                     default:
                         echo 'Wystąpił błąd podczas aktualizacji.';
                 }
@@ -180,6 +198,9 @@ function getImagePath($id_image) {
             
             <!-- UKRYTE POLE PRZECHOWUJĄCE ID PRODUKTU -->
             <input type="hidden" id="hidden_product_id" name="hidden_product_id" value="<?= $product_id ?>">
+            
+            <!-- TOKEN CSRF -->
+            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token) ?>">
 
             <!-- POLA EDYCJI PRODUKTU -->
             <div class="form-inline-group">

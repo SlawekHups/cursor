@@ -37,6 +37,7 @@ Otwórz w przeglądarce: `products.php`
 
 ### Zaimplementowane zabezpieczenia:
 - ✅ **SQL Injection** - Zabezpieczenie przed atakami SQL injection
+- ✅ **CSRF Protection** - Tokeny zabezpieczające przed Cross-Site Request Forgery
 - ✅ **Walidacja danych** - Sprawdzanie poprawności wprowadzanych danych
 - ✅ **Ograniczenia długości** - Limity dla pól tekstowych i numerycznych
 - ✅ **Escape HTML** - Zabezpieczenie przed XSS w wyświetlanych danych
@@ -59,6 +60,11 @@ System aktualizuje następujące tabele PrestaShop:
 
 ## 🔄 Changelog
 
+### v2.1 - CSRF Protection
+- ✅ **Dodanie zabezpieczenia CSRF** - tokeny bezpieczeństwa w formularzach
+- ✅ **Walidacja tokenów** - sprawdzanie autentyczności żądań
+- ✅ **Test bezpieczeństwa** - plik `csrf_test.php` do testowania
+
 ### v2.0 - Refaktoryzacja
 - ✅ Połączenie 3 plików w jeden uniwersalny `products.php`
 - ✅ Usunięcie duplikacji kodu
@@ -79,8 +85,18 @@ System aktualizuje następujące tabele PrestaShop:
 
 ## 🔍 Rozwój
 
-Planowane ulepszenia:
-- Dodanie CSRF protection
+## 🧪 Testowanie
+
+### Test zabezpieczeń CSRF
+Uruchom `csrf_test.php` aby przetestować:
+- Generowanie tokenów CSRF
+- Walidację tokenów
+- Blokowanie nieprawidłowych żądań
+- Przepuszczanie prawidłowych żądań
+
+## 🔮 Planowane ulepszenia
+
+- ~~Dodanie CSRF protection~~ ✅ **ZROBIONE**
 - System uwierzytelniania użytkowników
 - Logi operacji (audit trail)
 - API endpoints

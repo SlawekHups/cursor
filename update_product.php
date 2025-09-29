@@ -1,6 +1,11 @@
 <?php
 session_start();
 
+// Funkcje bezpieczeństwa CSRF
+function validateCSRFToken($token) {
+    return isset($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $token);
+}
+
 // Włączenie raportowania błędów
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
@@ -80,6 +85,13 @@ if ($conn->connect_error) {
 
 // Sprawdzenie, czy dane zostały przesłane metodą POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['product_id'])) {
+    
+    // WALIDACJA CSRF TOKEN - Pierwsza linia obrony!
+    if (!isset($_POST['csrf_token']) || !validateCSRFToken($_POST['csrf_token'])) {
+        header("Location: products.php?error=csrf&message=" . urlencode("Nieprawidłowy token bezpieczeństwa. Spróbuj ponownie."));
+        exit();
+    }
+    
     $product_id = intval($_POST['product_id']);
     $id_lang = 2; // Ustawienie języka PrestaShop
 

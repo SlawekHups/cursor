@@ -258,6 +258,7 @@ function getImagePath($id_image) {
             </div>
 
             <input type="submit" value="Zmień dane" class="btn btn-primary mt-3">
+            <button type="button" class="btn btn-warning mt-3 ml-2" onclick="generatePDF()">📄 Generuj PDF</button>
         </form>
     </div>
 
@@ -296,6 +297,19 @@ function getImagePath($id_image) {
                 updateFormFields();
             }
         });
+        
+        // Funkcja generowania PDF
+        function generatePDF() {
+            const productId = document.getElementById("product_id").value;
+            
+            if (!productId) {
+                alert("⚠️ Proszę najpierw wybrać produkt!");
+                return;
+            }
+            
+            // Otwórz stronę generowania PDF w nowym oknie
+            window.open('generate_pdf.php?id=' + productId, '_blank');
+        }
     </script>
 
 </body>

@@ -26,6 +26,23 @@ if (!file_exists($config_path)) {
 
 $parameters = include($config_path);
 
+// Funkcja sanityzacji HTML - dozwolone tylko bezpieczne tagi
+function sanitizeHtml($html) {
+    // Lista dozwolonych tagów HTML (bezpieczne dla PrestaShop)
+    $allowed_tags = '<p><br><b><i><u><strong><em><ul><ol><li><a><h1><h2><h3><h4><h5><h6><blockquote><code><pre><hr><span><div>';
+    
+    // Usuń niebezpieczne tagi i atrybuty
+    $sanitized = strip_tags($html, $allowed_tags);
+    
+    // Usuń potencjalnie niebezpieczne atrybuty (onclick, onerror, etc.)
+    $sanitized = preg_replace('/on\w+\s*=\s*["\'][^"\']*["\']/i', '', $sanitized);
+    
+    // Usuń javascript: w href
+    $sanitized = preg_replace('/href\s*=\s*["\']javascript:[^"\']*["\']/i', '', $sanitized);
+    
+    return $sanitized;
+}
+
 // Funkcja walidacji danych wejściowych
 function validateInput($data) {
     $errors = [];
@@ -72,6 +89,20 @@ function validateInput($data) {
         $quantity = intval($data['new_quantity']);
         if ($quantity < 0 || $quantity > 999999) {
             $errors[] = "Ilość musi być między 0 a 999999.";
+        }
+    }
+    
+    // Walidacja długości opisu pełnego
+    if (isset($data['new_description']) && !empty($data['new_description'])) {
+        if (strlen($data['new_description']) > 10000) {
+            $errors[] = "Opis produktu jest za długi (max 10000 znaków).";
+        }
+    }
+    
+    // Walidacja długości krótkiego opisu
+    if (isset($data['new_description_short']) && !empty($data['new_description_short'])) {
+        if (strlen($data['new_description_short']) > 800) {
+            $errors[] = "Krótki opis produktu jest za długi (max 800 znaków).";
         }
     }
     
@@ -158,12 +189,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['product_id'])) {
             }
             if (isset($_POST['new_description'])) { // ✅ Teraz można zapisać pustą wartość
                 $updates[] = "description = ?";
-                $params[] = $_POST['new_description'] !== "" ? $_POST['new_description'] : null;
+                // Sanityzacja HTML - usuń niebezpieczne tagi i atrybuty
+                $description = $_POST['new_description'] !== "" ? sanitizeHtml($_POST['new_description']) : null;
+                $params[] = $description;
                 $types .= "s";
             }
             if (isset($_POST['new_description_short'])) { // ✅ Można usunąć wartość krótkiego opisu
                 $updates[] = "description_short = ?";
-                $params[] = $_POST['new_description_short'] !== "" ? $_POST['new_description_short'] : null;
+                // Sanityzacja HTML - usuń niebezpieczne tagi i atrybuty
+                $descriptionShort = $_POST['new_description_short'] !== "" ? sanitizeHtml($_POST['new_description_short']) : null;
+                $params[] = $descriptionShort;
                 $types .= "s";
             }
 

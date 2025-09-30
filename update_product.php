@@ -1,14 +1,22 @@
 <?php
+// Konfiguracja środowiska - PRODUKCJA
+error_reporting(0);
+ini_set('display_errors', 0);
+ini_set('log_errors', 1);
+ini_set('error_log', __DIR__ . '/logs/error.log');
+
+// Konfiguracja bezpieczeństwa sesji
+ini_set('session.cookie_httponly', 1);
+ini_set('session.cookie_secure', isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 1 : 0);
+ini_set('session.use_strict_mode', 1);
+ini_set('session.cookie_samesite', 'Strict');
+
 session_start();
 
 // Funkcje bezpieczeństwa CSRF
 function validateCSRFToken($token) {
     return isset($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $token);
 }
-
-// Włączenie raportowania błędów
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 
 // Sprawdzenie, czy plik konfiguracji istnieje
 $config_path = $_SERVER['DOCUMENT_ROOT'] . '/app/config/parameters.php';
@@ -31,8 +39,8 @@ function validateInput($data) {
     
     // Walidacja EAN
     if (isset($data['new_ean']) && !empty($data['new_ean'])) {
-        if (!preg_match('/^\d{13}$/', $data['new_ean'])) {
-            $errors[] = "EAN musi składać się z dokładnie 13 cyfr.";
+        if (!preg_match('/^\d{8,13}$/', $data['new_ean'])) {
+            $errors[] = "EAN musi składać się z 8-13 cyfr.";
         }
     }
     
@@ -203,5 +211,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['product_id'])) {
 } else {
     header("Location: products.php?error=no_data");
     exit();
+}
+
+// Zamknięcie połączenia z bazą danych
+if (isset($conn)) {
+    $conn->close();
 }
 ?>

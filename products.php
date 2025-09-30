@@ -1,6 +1,15 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+// Konfiguracja środowiska - PRODUKCJA
+error_reporting(0);
+ini_set('display_errors', 0);
+ini_set('log_errors', 1);
+ini_set('error_log', __DIR__ . '/logs/error.log');
+
+// Konfiguracja bezpieczeństwa sesji
+ini_set('session.cookie_httponly', 1);
+ini_set('session.cookie_secure', isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 1 : 0);
+ini_set('session.use_strict_mode', 1);
+ini_set('session.cookie_samesite', 'Strict');
 
 session_start();
 
@@ -114,7 +123,7 @@ function getImagePath($id_image) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zmiana danych produktu - <?= htmlspecialchars($page_title) ?></title>
+    <title>Zmiana danych produktu - <?= htmlspecialchars($page_title, ENT_QUOTES, 'UTF-8') ?></title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="styles.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css">
@@ -122,7 +131,7 @@ function getImagePath($id_image) {
 <body>
 
     <div class="container mt-5">
-        <h2>Zmień dane produktu - <?= htmlspecialchars($page_title) ?></h2>
+        <h2>Zmień dane produktu - <?= htmlspecialchars($page_title, ENT_QUOTES, 'UTF-8') ?></h2>
 
         <!-- Przyciski filtrowania -->
         <div class="mb-5">
@@ -130,7 +139,7 @@ function getImagePath($id_image) {
                 <button type="button" 
                         class="btn <?= $filter === $key ? $config['class'] . ' active' : 'btn-outline-secondary' ?> filter-btn" 
                         onclick="window.location.href='products.php?filter=<?= $key ?>'">
-                    <?= htmlspecialchars($config['title']) ?>
+                    <?= htmlspecialchars($config['title'], ENT_QUOTES, 'UTF-8') ?>
                 </button>
             <?php endforeach; ?>
         </div>
@@ -155,10 +164,10 @@ function getImagePath($id_image) {
                         echo 'Brak danych do aktualizacji.';
                         break;
                     case 'validation':
-                        echo isset($_GET['message']) ? htmlspecialchars(urldecode($_GET['message'])) : 'Błąd walidacji danych.';
+                        echo isset($_GET['message']) ? htmlspecialchars(urldecode($_GET['message']), ENT_QUOTES, 'UTF-8') : 'Błąd walidacji danych.';
                         break;
                     case 'csrf':
-                        echo isset($_GET['message']) ? htmlspecialchars(urldecode($_GET['message'])) : 'Błąd bezpieczeństwa - nieprawidłowy token.';
+                        echo isset($_GET['message']) ? htmlspecialchars(urldecode($_GET['message']), ENT_QUOTES, 'UTF-8') : 'Błąd bezpieczeństwa - nieprawidłowy token.';
                         break;
                     default:
                         echo 'Wystąpił błąd podczas aktualizacji.';
@@ -178,17 +187,17 @@ function getImagePath($id_image) {
                         $selected = ($product_id == $row['id_product']) ? 'selected' : '';
                     ?>
                         <option value="<?= $row['id_product']; ?>" 
-                                data-name="<?= htmlspecialchars($row['product_name']); ?>"
-                                data-ean="<?= htmlspecialchars($row['ean13']); ?>"
-                                data-reference="<?= htmlspecialchars($row['reference']); ?>"
-                                data-price="<?= htmlspecialchars($row['wholesale_price']); ?>"
-                                data-retail-price="<?= htmlspecialchars($row['price']); ?>"
-                                data-quantity="<?= htmlspecialchars($row['quantity']); ?>"
-                                data-description="<?= htmlspecialchars($row['description']); ?>"
-                                data-description_short="<?= htmlspecialchars($row['description_short']); ?>"
-                                data-image="<?= htmlspecialchars($imagePath); ?>"
+                                data-name="<?= htmlspecialchars($row['product_name'], ENT_QUOTES, 'UTF-8'); ?>"
+                                data-ean="<?= htmlspecialchars($row['ean13'], ENT_QUOTES, 'UTF-8'); ?>"
+                                data-reference="<?= htmlspecialchars($row['reference'], ENT_QUOTES, 'UTF-8'); ?>"
+                                data-price="<?= htmlspecialchars($row['wholesale_price'], ENT_QUOTES, 'UTF-8'); ?>"
+                                data-retail-price="<?= htmlspecialchars($row['price'], ENT_QUOTES, 'UTF-8'); ?>"
+                                data-quantity="<?= htmlspecialchars($row['quantity'], ENT_QUOTES, 'UTF-8'); ?>"
+                                data-description="<?= htmlspecialchars($row['description'], ENT_QUOTES, 'UTF-8'); ?>"
+                                data-description_short="<?= htmlspecialchars($row['description_short'], ENT_QUOTES, 'UTF-8'); ?>"
+                                data-image="<?= htmlspecialchars($imagePath, ENT_QUOTES, 'UTF-8'); ?>"
                                 <?= $selected; ?>>
-                                [<?= $row['id_product']; ?>] - [<?= htmlspecialchars($row['reference']); ?>] <?= htmlspecialchars($row['product_name']); ?>
+                                [<?= $row['id_product']; ?>] - [<?= htmlspecialchars($row['reference'], ENT_QUOTES, 'UTF-8'); ?>] <?= htmlspecialchars($row['product_name'], ENT_QUOTES, 'UTF-8'); ?>
                         </option>
                     <?php endwhile; ?>
                 </select>
@@ -200,7 +209,7 @@ function getImagePath($id_image) {
             <input type="hidden" id="hidden_product_id" name="hidden_product_id" value="<?= $product_id ?>">
             
             <!-- TOKEN CSRF -->
-            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token) ?>">
+            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token, ENT_QUOTES, 'UTF-8') ?>">
 
             <!-- POLA EDYCJI PRODUKTU -->
             <div class="form-inline-group">
@@ -211,7 +220,7 @@ function getImagePath($id_image) {
 
                 <div class="form-group">
                     <label for="new_ean">EAN:</label>
-                    <input type="text" id="new_ean" name="new_ean" class="form-control" maxlength="13" pattern="[0-9]{13}">
+                    <input type="text" id="new_ean" name="new_ean" class="form-control" maxlength="13" pattern="[0-9]{8,13}" title="EAN musi składać się z 8-13 cyfr">
                 </div>
 
                 <div class="form-group">
@@ -291,3 +300,9 @@ function getImagePath($id_image) {
 
 </body>
 </html>
+<?php
+// Zamknięcie połączenia z bazą danych
+if (isset($conn)) {
+    $conn->close();
+}
+?>

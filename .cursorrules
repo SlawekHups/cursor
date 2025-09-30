@@ -1,0 +1,104 @@
+# Cursor AI Rules - Zasady dla tego projektu
+
+## Język projektu
+- Wszystkie commit messages MUSZĄ być po polsku
+- Używaj polskich znaków: ą, ć, ę, ł, ń, ó, ś, ź, ż
+- Komentarze w kodzie po polsku
+- Dokumentacja po polsku
+
+## Format commit message (PO POLSKU)
+
+### Tytuł (max 50 znaków):
+```
+Dodanie [funkcjonalność]
+Naprawienie [błąd]
+Zmiana [co zostało zmienione]
+Usunięcie [co zostało usunięte]
+Aktualizacja [co zostało zaktualizowane]
+Refaktoryzacja [czego dotyczy]
+```
+
+### Opis szczegółowy:
+```
+- Dodano: [szczegóły nowej funkcjonalności]
+- Zmieniono: [szczegóły modyfikacji]
+- Naprawiono: [szczegóły naprawy błędu]
+- Usunięto: [co i dlaczego usunięto]
+- Zaktualizowano: [co zostało zaktualizowane]
+```
+
+## Przykłady DOBRYCH commit messages:
+
+```
+Dodanie sanityzacji HTML w opisach produktów
+
+- Dodano funkcję sanitizeHtml() do czyszczenia HTML
+- Usuwanie niebezpiecznych tagów <script>, <iframe>
+- Usuwanie atrybutów onclick, onerror, onload
+- Zabezpieczenie przed Stored XSS w opisach
+- Dozwolone tylko bezpieczne tagi HTML dla PrestaShop
+```
+
+```
+Naprawienie walidacji kodu EAN produktów
+
+- Zmieniono regex z /^\d{13}$/ na /^\d{8,13}$/
+- Dodano obsługę EAN-8 (8 cyfr) i EAN-13 (13 cyfr)
+- Poprawiono komunikaty błędów walidacji
+- Zaktualizowano pattern w formularzu HTML
+```
+
+```
+Konfiguracja bezpieczeństwa sesji i wyłączenie błędów
+
+- Wyłączono display_errors dla produkcji
+- Włączono logowanie błędów do logs/error.log
+- Dodano session.cookie_httponly dla ochrony przed XSS
+- Dodano session.cookie_secure dla HTTPS
+- Dodano session.use_strict_mode dla ochrony przed session fixation
+```
+
+## Przykłady ZŁYCH commit messages:
+
+❌ "fix bug"
+❌ "update"
+❌ "changes"
+❌ "wip"
+❌ Anything in English when Polish is expected
+
+## Standardy kodu
+
+### PHP:
+- Komentarze po polsku
+- Nazwy zmiennych po angielsku (konwencja)
+- Komunikaty błędów po polsku
+- Dokumentacja PHPDoc po polsku
+
+### JavaScript:
+- Komentarze po polsku
+- Nazwy funkcji/zmiennych po angielsku
+- Console.log po polsku (dla debugowania)
+
+### CSS:
+- Komentarze po polsku
+- Nazwy klas po angielsku (konwencja)
+
+## Format dokumentacji:
+- README.md - po polsku
+- CHANGELOG.md - po polsku
+- Raporty audytu - po polsku
+- Komentarze w kodzie - po polsku
+
+## Emotikony w commitach (opcjonalnie):
+✨ Nowa funkcja
+🐛 Naprawa błędu
+♻️ Refaktoryzacja
+📝 Dokumentacja
+🔒 Bezpieczeństwo
+⚡ Wydajność
+💄 UI/UX
+🚀 Wdrożenie
+🔧 Konfiguracja
+🗑️ Usunięcie
+✅ Testy
+🌐 Tłumaczenia

@@ -1,0 +1,27 @@
+# Tytuł commita (krótki opis, max 50 znaków)
+
+
+# Szczegółowy opis zmian (opcjonalnie, max 72 znaki na linię)
+# 
+# Użyj polskich znaków: ą, ć, ę, ł, ń, ó, ś, ź, ż
+#
+# Szablon commita po polsku:
+# - Dodano: nowa funkcjonalność
+# - Zmieniono: modyfikacja istniejącej funkcjonalności  
+# - Naprawiono: naprawa błędu
+# - Usunięto: usunięcie kodu/funkcjonalności
+# - Zaktualizowano: aktualizacja zależności/dokumentacji
+#
+# Przykład:
+# Dodanie walidacji formularza kontaktowego
+# 
+# - Dodano walidację pól email i telefon
+# - Zmieniono wygląd przycisków formularza
+# - Naprawiono błąd z polskimi znakami
+# - Zaktualizowano dokumentację README.md
+#
+# Pamiętaj:
+# - Używaj czasu dokonanego (Dodano, Zmieniono, Naprawiono)
+# - Bądź konkretny i opisowy
+# - Pisz w języku polskim
+# - Używaj polskich znaków (ą, ć, ę, ł, ń, ó, ś, ź, ż)
